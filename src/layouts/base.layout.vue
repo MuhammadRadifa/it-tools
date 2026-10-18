@@ -5,7 +5,6 @@ import { RouterLink } from 'vue-router';
 import { Home2, Menu2 } from '@vicons/tabler';
 
 import { storeToRefs } from 'pinia';
-import HeroGradient from '../assets/hero-gradient.svg?component';
 import MenuLayout from '../components/MenuLayout.vue';
 import NavbarButtons from '../components/NavbarButtons.vue';
 import { useStyleStore } from '@/stores/style.store';
@@ -34,15 +33,12 @@ const tools = computed<ToolCategory[]>(() => [
   <MenuLayout class="menu-layout" :class="{ isSmallScreen: styleStore.isSmallScreen }">
     <template #sider>
       <RouterLink to="/" class="hero-wrapper">
-        <HeroGradient class="gradient" />
-        <div class="text-wrapper">
-          <div class="title">
-            IT - TOOLS
-          </div>
-          <div class="divider" />
-          <div class="subtitle">
-            {{ $t('home.subtitle') }}
-          </div>
+        <div class="wordmark">
+          <span class="name">it-tools</span>
+          <span class="cursor" aria-hidden="true" />
+        </div>
+        <div class="subtitle">
+          {{ $t('home.subtitle') }}
         </div>
       </RouterLink>
 
@@ -150,45 +146,64 @@ const tools = computed<ToolCategory[]>(() => [
 }
 
 .sider-content {
-  padding-top: 160px;
+  padding-top: 120px;
   padding-bottom: 200px;
 }
 
 .hero-wrapper {
   position: absolute;
-  display: block;
+  top: 0;
   left: 0;
   width: 100%;
   z-index: 10;
-  overflow: hidden;
+  display: block;
+  padding: 22px 20px 20px;
+  text-decoration: none;
+  background-color: v-bind('themeVars.cardColor');
+  border-bottom: 1px solid v-bind('themeVars.dividerColor');
 
-  .gradient {
-    margin-top: -65px;
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    .name {
+      font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      color: v-bind('themeVars.textColor1');
+    }
+
+    .cursor {
+      width: 8px;
+      height: 15px;
+      background-color: v-bind('themeVars.primaryColor');
+      animation: cursor-blink 1.2s step-end infinite;
+    }
+
+    &:hover .cursor {
+      animation-play-state: paused;
+    }
   }
 
-  .text-wrapper {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    top: 16px;
-    color: #fff;
+  .subtitle {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: v-bind('themeVars.textColor3');
+  }
 
-    .title {
-      font-size: 25px;
-      font-weight: 600;
+  @keyframes cursor-blink {
+    50% {
+      opacity: 0;
     }
+  }
 
-    .divider {
-      width: 50px;
-      height: 2px;
-      border-radius: 4px;
-      background-color: v-bind('themeVars.primaryColor');
-      margin: 0 auto 5px;
-    }
-
-    .subtitle {
-      font-size: 16px;
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark .cursor {
+      animation: none;
     }
   }
 }
