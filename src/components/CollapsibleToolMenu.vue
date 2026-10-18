@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
 import { useThemeVars } from 'naive-ui';
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import MenuIconItem from './MenuIconItem.vue';
 import type { Tool, ToolCategory } from '@/tools/tools.types';
+import { toolsCategories } from '@/tools';
 
 const props = withDefaults(defineProps<{ toolsByCategory?: ToolCategory[] }>(), { toolsByCategory: () => [] });
 const { toolsByCategory } = toRefs(props);
 const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+
+const categoryPaths = computed(() => new Map(
+  toolsCategories.map(({ name, path }) => [t(`tools.categories.${name.toLowerCase()}`, name), path]),
+));
 
 const makeLabel = (tool: Tool) => () => h(RouterLink, { to: tool.path }, { default: () => tool.name });
 const makeIcon = (tool: Tool) => () => h(MenuIconItem, { tool });
@@ -29,9 +36,18 @@ function toggleCategoryCollapse({ name }: { name: string }) {
   collapsedCategories.value[name] = !collapsedCategories.value[name];
 }
 
+function onCategoryClick({ name, path }: { name: string; path?: string }) {
+  toggleCategoryCollapse({ name });
+
+  if (path && route.path !== path) {
+    router.push(path);
+  }
+}
+
 const menuOptions = computed(() =>
   toolsByCategory.value.map(({ name, components }) => ({
     name,
+    path: categoryPaths.value.get(name),
     isCollapsed: collapsedCategories.value[name],
     tools: components.map(tool => ({
       label: makeLabel(tool),
@@ -45,8 +61,11 @@ const themeVars = useThemeVars();
 </script>
 
 <template>
-  <div v-for="{ name, tools, isCollapsed } of menuOptions" :key="name">
-    <div ml-6px mt-12px flex cursor-pointer items-center op-60 @click="toggleCategoryCollapse({ name })">
+  <div v-for="{ name, path, tools, isCollapsed } of menuOptions" :key="name">
+    <div
+      ml-6px mt-12px flex cursor-pointer items-center op-60 transition-opacity hover:op-100
+      @click="onCategoryClick({ name, path })"
+    >
       <span :class="{ 'rotate-0': isCollapsed, 'rotate-90': !isCollapsed }" text-16px lh-1 op-50 transition-transform>
         <icon-mdi-chevron-right />
       </span>

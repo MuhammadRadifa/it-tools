@@ -196,3 +196,7 @@ export const tools = toolsByCategory.flatMap(({ components }) => components);
 export const toolsWithCategory = toolsByCategory.flatMap(({ components, name }) =>
   components.map(tool => ({ category: name, ...tool })),
 );
+export const toolsCategories = toolsByCategory.map(({ name }) => {
+  const slug = name.toLowerCase().replace(/\s+/g, '-');
+  return { name, slug, path: `/c/${slug}` };
+});

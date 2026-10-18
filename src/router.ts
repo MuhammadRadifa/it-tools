@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { layouts } from './layouts/index';
 import HomePage from './pages/Home.page.vue';
 import NotFound from './pages/404.page.vue';
-import { tools } from './tools';
+import { tools, toolsCategories } from './tools';
 import { config } from './config';
 import { routes as demoRoutes } from './ui/demo/demo.routes';
 
@@ -17,6 +17,12 @@ const toolsRedirectRoutes = tools
   .flatMap(
     ({ path, redirectFrom }) => redirectFrom?.map(redirectSource => ({ path: redirectSource, redirect: path })) ?? [],
   );
+const toolsCategoriesRoutes = toolsCategories.map(({ name, slug, path }) => ({
+  path,
+  name: `category-${slug}`,
+  component: () => import('./pages/Category.page.vue'),
+  meta: { category: name },
+}));
 
 const router = createRouter({
   history: createWebHistory(config.app.baseUrl),
@@ -33,6 +39,7 @@ const router = createRouter({
     },
     ...toolsRoutes,
     ...toolsRedirectRoutes,
+    ...toolsCategoriesRoutes,
     ...(config.app.env === 'development' ? demoRoutes : []),
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
