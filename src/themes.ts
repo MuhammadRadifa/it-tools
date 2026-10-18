@@ -1,6 +1,13 @@
 import type { GlobalThemeOverrides } from 'naive-ui';
 
 export const lightThemeOverrides: GlobalThemeOverrides = {
+  common: {
+    primaryColor: '#f97316FF',
+    primaryColorHover: '#fb923cFF',
+    primaryColorPressed: '#ea580cFF',
+    primaryColorSuppl: '#fb923cFF',
+  },
+
   Menu: {
     itemHeight: '32px',
   },
@@ -16,10 +23,10 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
 
 export const darkThemeOverrides: GlobalThemeOverrides = {
   common: {
-    primaryColor: '#1ea54cFF',
-    primaryColorHover: '#36AD6AFF',
-    primaryColorPressed: '#0C7A43FF',
-    primaryColorSuppl: '#36AD6AFF',
+    primaryColor: '#f97316FF',
+    primaryColorHover: '#fb923cFF',
+    primaryColorPressed: '#ea580cFF',
+    primaryColorSuppl: '#fb923cFF',
   },
 
   Notification: {
