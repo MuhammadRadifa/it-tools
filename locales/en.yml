@@ -317,6 +317,10 @@ tools:
     title: Hash text
     description: 'Hash a text string using the function you need : MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3 or RIPEMD160'
 
+  hash-compare:
+    title: Hash compare
+    description: 'Compare a text with a hash to check if they match, using MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3 or RIPEMD160'
+
   json-to-toml:
     title: JSON to TOML
     description: Parse and convert JSON to TOML.
