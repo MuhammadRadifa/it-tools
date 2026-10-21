@@ -267,7 +267,7 @@ tools:
 
   chmod-calculator:
     title: Chmod calculator
-    description: Compute your chmod permissions and commands with this online chmod calculator.
+    description: Compute chmod permissions, convert ls -l modes like drwxr-xr-x, and generate chmod and chown scripts for files or folders.
 
   rsa-key-pair-generator:
     title: RSA key pair generator
